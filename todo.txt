@@ -1,0 +1,3 @@
+- convert num of registers to int constexpr OR static int constexpr as private class members
+- add functionality for reading motor data in either constructor or as a first called method
+- add functionality for configuring motor data through code instead of buttons on motor
