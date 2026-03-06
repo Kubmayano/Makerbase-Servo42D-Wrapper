@@ -235,7 +235,7 @@ int Motor::set_subdivisions(uint8_t step_size)
 int Motor::automatic_screen_off(uint8_t enable)
 {
     constexpr int addr = 0x0087;
-    if (enable > 1) enable == 1;
+    if (enable > 1) enable = 1;
     uint16_t data = enable;
 
     if (bus.write_single_register(slave_id, addr, data) == -1)
