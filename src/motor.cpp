@@ -110,7 +110,7 @@ int16_t Motor::read_realtime_speed()
     int res_count = bus.read_input_registers(slave_id, addr, nr, &res);
     if (res_count != nr)
     {
-        throw std::runtime_error("modbus read returned unexpected register count");
+        std::cerr << "modbus read returned unexpected register count\n";
     }
 
     return static_cast<int16_t>(res);
@@ -126,7 +126,7 @@ int32_t Motor::read_position_angle_error()
     int res_count = bus.read_input_registers(slave_id, addr, nr, res);
     if (res_count != nr)
     {
-        throw std::runtime_error("modbus read returned unexpected register count");
+        std::cerr << "modbus read returned unexpected register count\n";
     }
 
     return static_cast<int32_t>(res[0] << 16 | res[1]);
@@ -141,7 +141,7 @@ bool Motor::read_enable_status()
     int res_count = bus.read_input_registers(slave_id, addr, nr, &res);
     if (res_count != nr)
     {
-        throw std::runtime_error("modbus read returned unexpected register count");
+        std::cerr << "modbus read returned unexpected register count\n";
     }
 
     return static_cast<bool>(res & 0xFF);
@@ -156,7 +156,7 @@ uint32_t Motor::read_version_information()
     int res_count = bus.read_input_registers(slave_id, addr, nr, res);
     if (res_count != nr)
     {
-        throw std::runtime_error("modbus read returned unexpected register count");
+        std::cerr << "modbus read returned unexpected register count\n";
     }
 
     return static_cast<uint32_t>(res[0] << 16 | res[1]);
