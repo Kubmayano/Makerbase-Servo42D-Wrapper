@@ -25,6 +25,13 @@ class ModbusBus
             return modbus_read_registers(ctx_, addr, nb, dest);
         }
 
+        int read_input_registers(uint8_t unit,int addr, int nb, uint16_t* dest)
+        {
+            std::scoped_lock lk(mtx_);
+            modbus_set_slave(ctx_, unit);
+            return modbus_read_input_registers(ctx_, addr, nb, dest);
+        }
+
         int write_single_reg(uint8_t unit, int addr, uint16_t value)
         {
             std::scoped_lock lk(mtx_);
