@@ -88,17 +88,12 @@ int Motor::stop(uint8_t acceleration)
 
 int Motor::emergency_stop()
 {
-    constexpr int addr = 0x00F6;
-    constexpr int nr = 0x02;
-    uint16_t data[nr];
+    constexpr int addr = 0x00F7;
+    uint16_t data = 0x01;
 
-    data[0] = 0x00;
-    data[1] = 0x00;
-
-    int res_count = bus.write_multiple_registers(unit, addr, nr, data);
-    if (res_count != nr)
+    if(bus.write_single_register(unit, addr, data) == -1)
     {
-        std::cerr << "Failed writing to registers\n";
+        std::cerr << "Failed writing to register\n";
         return -1;
     }
 
