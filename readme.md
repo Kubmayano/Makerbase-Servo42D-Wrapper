@@ -45,5 +45,5 @@ Clone project and run:
 mkdir build
 cd build
 cmake ..
-cmake --build
+make
 ```
