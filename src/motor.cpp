@@ -9,6 +9,11 @@ Motor::Motor(ModbusBus& bus, uint8_t unit) : bus(bus), unit(unit)
 
 }
 
+Motor::~Motor()
+{
+    
+}
+
 int Motor::set_rpm(uint8_t direction, uint8_t acceleration, uint16_t speed)
 {
     int addr = 0x00F6;

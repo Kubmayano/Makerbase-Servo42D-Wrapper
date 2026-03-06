@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include "modbusbus.hpp"
 
+
+
 /**
  * @brief A class containing methods for operation and control of the motors.
  */
