@@ -11,9 +11,13 @@ ModbusBus::ModbusBus(const std::string& port, int baud)
     }
 
     if (modbus_connect(ctx_) != 0) {
+        std::string msg = "modbus connection failed: \n";
+        msg += modbus_strerror(errno);
+
         modbus_free(ctx_);
         ctx_ = nullptr;
-        throw std::runtime_error("modbus connection failed");
+
+        throw std::runtime_error(msg);
     }
 }
 
