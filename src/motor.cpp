@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <iostream>
 
-Motor::Motor(ModbusBus& bus, uint8_t unit) : bus(bus), unit(unit)
+Motor::Motor(ModbusBus& bus, uint8_t slave_id) : bus(bus), slave_id(slave_id)
 {
 
 }
@@ -28,7 +28,7 @@ int Motor::set_rpm(uint8_t direction, uint8_t acceleration, uint16_t speed)
     data[0] = (direction << 8) | acceleration;
     data[1] = speed;
 
-    int res_count = bus.write_multiple_registers(unit, addr, nr, data);
+    int res_count = bus.write_multiple_registers(slave_id, addr, nr, data);
     if (res_count != nr)
     {
         std::cerr << "Failed wrting to registers\n";
@@ -54,7 +54,7 @@ int Motor::set_rpm_timed(uint8_t direction, uint8_t acceleration, uint16_t speed
     data[2] = (runtime >> 16);
     data[3] = (runtime & 0xFFFF);
 
-    int res_count = bus.write_multiple_registers(unit, addr, nr, data);
+    int res_count = bus.write_multiple_registers(slave_id, addr, nr, data);
     if (res_count != nr)
     {
         std::cerr << "Failed writing to registers\n";
@@ -76,7 +76,7 @@ int Motor::stop(uint8_t acceleration)
     data[0] = acceleration; // can be written as (0x00 << 8) | acceleration;
     data[1] = 0x00;
 
-    int res_count = bus.write_multiple_registers(unit, addr, nr, data);
+    int res_count = bus.write_multiple_registers(slave_id, addr, nr, data);
     if (res_count != nr)
     {
         std::cerr << "Failed writing to registers\n";
@@ -91,7 +91,7 @@ int Motor::emergency_stop()
     constexpr int addr = 0x00F7;
     uint16_t data = 0x01;
 
-    if(bus.write_single_register(unit, addr, data) == -1)
+    if(bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n";
         return -1;
@@ -107,7 +107,7 @@ int16_t Motor::read_realtime_speed()
 
     uint16_t res = 0;
 
-    int res_count = bus.read_input_registers(unit, addr, nr, &res);
+    int res_count = bus.read_input_registers(slave_id, addr, nr, &res);
     if (res_count != nr)
     {
         throw std::runtime_error("modbus read returned unexpected register count");
@@ -123,7 +123,7 @@ int32_t Motor::read_position_angle_error()
 
     uint16_t res[nr];
 
-    int res_count = bus.read_input_registers(unit, addr, nr, res);
+    int res_count = bus.read_input_registers(slave_id, addr, nr, res);
     if (res_count != nr)
     {
         throw std::runtime_error("modbus read returned unexpected register count");
@@ -138,7 +138,7 @@ bool Motor::read_enable_status()
     constexpr int nr = 0x01;
     uint16_t res = 0;
 
-    int res_count = bus.read_input_registers(unit, addr, nr, &res);
+    int res_count = bus.read_input_registers(slave_id, addr, nr, &res);
     if (res_count != nr)
     {
         throw std::runtime_error("modbus read returned unexpected register count");
@@ -153,7 +153,7 @@ uint32_t Motor::read_version_information()
     constexpr int nr = 0x02;
     uint16_t res[nr];
 
-    int res_count = bus.read_input_registers(unit, addr, nr, res);
+    int res_count = bus.read_input_registers(slave_id, addr, nr, res);
     if (res_count != nr)
     {
         throw std::runtime_error("modbus read returned unexpected register count");
@@ -167,7 +167,7 @@ int Motor::calibrate_motor()
     constexpr int addr = 0x0080;
     uint16_t data = 0x0001;
 
-    if(bus.write_single_register(unit, addr, data) == -1)
+    if(bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n";
         return -1;
@@ -181,7 +181,7 @@ int Motor::set_work_mode(uint16_t mode)
     constexpr int addr = 0x0082;
     uint16_t data = mode;
 
-    if(bus.write_single_register(unit, addr, data) == -1)
+    if(bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n";
         return -1;
@@ -195,7 +195,7 @@ int Motor::set_working_current(uint16_t current)
     constexpr int addr = 0x0083;
     uint16_t data = current;
 
-    if(bus.write_single_register(unit, addr, data) == -1)
+    if(bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n";
         return -1;
@@ -209,7 +209,7 @@ int Motor::set_holding_current(uint8_t hold_option)
     constexpr int addr = 0x009B;
     uint16_t data = hold_option;
 
-    if (bus.write_single_register(unit, addr, data) == -1)
+    if (bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n";
         return -1;
@@ -223,7 +223,7 @@ int Motor::set_subdivisions(uint8_t step_size)
     constexpr int addr = 0x0084;
     uint16_t data = step_size;
 
-    if (bus.write_single_register(unit, addr, data) == -1)
+    if (bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n";
         return -1;
@@ -238,7 +238,7 @@ int Motor::automatic_screen_off(uint8_t enable)
     if (enable > 1) enable == 1;
     uint16_t data = enable;
 
-    if (bus.write_single_register(unit, addr, data) == -1)
+    if (bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n";
         return -1;
@@ -253,7 +253,7 @@ int Motor::set_subdivision_interpolation(uint8_t enable)
     if (enable > 1) enable = 1;
     uint16_t data = enable;
 
-    if (bus.write_single_register(unit, addr, data) == -1)
+    if (bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n"; 
         return -1;
@@ -268,7 +268,7 @@ int Motor::set_baud_rate(uint8_t baud)
     if (baud > 7) baud = 7;
     uint16_t data = baud;
 
-    if (bus.write_single_register(unit, addr, data) == -1)
+    if (bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed writing to register\n";
         return -1;
@@ -287,7 +287,7 @@ int Motor::set_slave_addr(uint8_t address)
     }
     uint16_t data = address;
 
-    if (bus.write_single_register(unit, addr, data) == -1)
+    if (bus.write_single_register(slave_id, addr, data) == -1)
     {
         std::cerr << "Failed to write to register\n";
         return -1;
@@ -311,7 +311,7 @@ int Motor::set_PID_parameters_vFOC(uint16_t Kp, uint16_t Ki, uint16_t Kd, uint16
     data[2] = Kd;
     data[3] = Kv;
 
-    int res_count = bus.write_multiple_registers(unit, addr, nr, data);
+    int res_count = bus.write_multiple_registers(slave_id, addr, nr, data);
     if (res_count != nr)
     {
         std::cerr << "modbus write returned unexpected register count\n";

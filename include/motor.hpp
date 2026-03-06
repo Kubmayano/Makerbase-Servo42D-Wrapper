@@ -14,9 +14,9 @@ class Motor
         /**
          * @brief Constructor for each motor.
          * @param bus A ModbusBus reference, each motor shares the same singular reference.
-         * @param unit The unique motor ID, this begins at 0 but is reserved, range is 1->255.
+         * @param slave_id The unique motor ID, this begins at 0 but is reserved, range is 1->255.
          */
-        Motor(ModbusBus& bus, uint8_t unit);
+        Motor(ModbusBus& bus, uint8_t slave_id);
 
         /**
          * @brief Empty destructor for now
@@ -153,6 +153,6 @@ class Motor
 
     private:
         ModbusBus& bus;
-        uint8_t unit;
+        uint8_t slave_id;
 
 };
