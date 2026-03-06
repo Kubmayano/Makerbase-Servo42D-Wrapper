@@ -19,6 +19,11 @@ class Motor
         Motor(ModbusBus& bus, uint8_t unit);
 
         /**
+         * @brief Empty destructor for now
+         */
+        ~Motor();
+
+        /**
          * @brief Sets motor RPM.
          * @param direction 0 -> CCW, 1 -> CW.
          * @param acceleration 0 -> 255, 255 being almost instant.
