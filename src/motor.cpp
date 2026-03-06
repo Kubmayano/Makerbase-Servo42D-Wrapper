@@ -1,5 +1,6 @@
 #include "modbusbus.hpp"
 #include <stdint.h>
+#include <stdexcept>
 
 
 class Motor
@@ -76,6 +77,38 @@ class Motor
             data[1] = 0x00;
 
             return bus.write_multiple_registers(unit, addr, nr, data);
+        }
+
+        int16_t read_realtime_speed()
+        {
+            int addr = 0x0032;
+            int nr = 0x01;
+
+            uint16_t res = 0;
+
+            int res_count = bus.read_input_registers(unit, addr, nr, &res);
+            if (res_count != nr)
+            {
+                throw std::runtime_error("modbus read returned unexpected register count");
+            }
+
+            return static_cast<int16_t>(res);
+        }
+
+        int32_t read_position_angle_error()
+        {
+            int addr = 0x0039;
+            int nr = 0x02;
+
+            uint16_t res[nr];
+
+            int res_count = bus.read_input_registers(unit, addr, nr, res);
+            if (res_count != nr)
+            {
+                throw std::runtime_error("modbus read returned unexpected register count");
+            }
+
+            return static_cast<int32_t>(res[0] << 16 | res[1]);
         }
 
     private:
