@@ -48,3 +48,18 @@ cmake ..
 make
 ./servo42_example
 ```
+
+## Known issues:
+If program fails to run with errorcode
+```bash
+terminate called after throwing an instance of 'std::runtime_error'
+  what():  modbus connection failed: 
+Permission denied
+Aborted (core dumped)
+```
+A fix can be done by ensuring the user is added to the dialout group, a temporary fix is:
+```bash
+newgrp dialout
+make
+```
+This should fix the issue, look into how to add yourself to dialout group permanently online for a permanent fix.
