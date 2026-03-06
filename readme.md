@@ -18,10 +18,11 @@ This driver contains functions for reading motor telemetry and controlling the m
 - Working C++ compiler, recommend G++. 
 - 'libmodbus' C library.
 
-Steps for installing working C++ compiler among other essentials on Linux:
+Steps for installing working C++ compiler, and CMake on Linux:
 ```bash
 sudo apt update
 sudo apt install build-essential
+sudo apt install cmake
 ```
 
 Steps for installing libmodbus on Linux:
