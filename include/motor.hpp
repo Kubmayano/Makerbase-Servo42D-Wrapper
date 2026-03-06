@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "modbusbus.hpp"
 
 /**
  * @brief A class containing methods for operation and control of the motors.
@@ -13,7 +14,7 @@ class Motor
          * @param bus A ModbusBus reference, each motor shares the same singular reference.
          * @param unit The unique motor ID, this begins at 0 but is reserved, range is 1->255.
          */
-        Motor(ModbusBus& bus, uint8_t unit) : bus(bus), unit(unit) {};
+        Motor(ModbusBus& bus, uint8_t unit);
 
         /**
          * @brief Sets motor RPM.
