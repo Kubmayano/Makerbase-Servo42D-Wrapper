@@ -16,7 +16,7 @@ class ModbusBus
          * @param addr The function address according to servo42d documentation.
          * @param nb The number of registers being read.
          * @param dest The destination array to send the data back to.
-         * @return Not sure about this yet.
+         * @return Number of registers read.
          */
         int read_holding_registers(uint8_t unit, int addr, int nb, uint16_t* dest);
 
@@ -25,7 +25,7 @@ class ModbusBus
          * @param unit The motor ID which to execute the command on. 
          * @param addr The function address according to servo42d documentation.
          * @param value The value to write to the register.
-         * @return Not sure about this yet.
+         * @return 1 if register was written to successfully, -1 if error.
          */
         int write_single_register(uint8_t unit, int addr, uint16_t value);
 
@@ -35,7 +35,7 @@ class ModbusBus
          * @param addr The function address according to the servo42d documentation.
          * @param nb The number of registers being written to.
          * @param values The values being written to the registers.
-         * @return Not sure about this yet.
+         * @return Number of registers written to.
          */
         int write_multiple_registers(uint8_t unit, int addr, int nb, const uint16_t* values);
 
@@ -45,7 +45,7 @@ class ModbusBus
          * @param addr The function address acording to the servo42d documentation.
          * @param nb The number of registers being read.
          * @param dest The destination array to write the data to.
-         * @return Not sure about this yet.
+         * @return Number of registers read.
          */
         int read_input_registers(uint8_t unit,int addr, int nb, uint16_t* dest);
 
