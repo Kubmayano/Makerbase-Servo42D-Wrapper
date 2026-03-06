@@ -107,3 +107,57 @@ int32_t Motor::read_position_angle_error()
 
     return static_cast<int32_t>(res[0] << 16 | res[1]);
 }
+
+bool Motor::read_enable_status()
+{
+    int addr = 0x003A;
+    int nr = 0x01;
+    uint16_t res = 0;
+
+    int res_count = bus.read_input_registers(unit, addr, nr, &res);
+    if (res_count != nr)
+    {
+        throw std::runtime_error("modbus read returned unexpected register count");
+    }
+
+    return static_cast<bool>(res & 0xFF);
+}
+
+uint32_t Motor::read_version_information()
+{
+    int addr = 0x0040;
+    int nr = 0x02;
+    uint16_t res[nr];
+
+    int res_count = bus.read_input_registers(unit, addr, nr, res);
+    if (res_count != nr)
+    {
+        throw std::runtime_error("modbus read returned unexpected register count");
+    }
+
+    return static_cast<uint32_t>(res[0] << 16 | res[1]);
+}
+
+int Motor::calibrate_motor()
+{
+    int addr = 0x0080;
+    uint16_t data = 0x0001;
+
+    return bus.write_single_register(unit, addr, data);
+}
+
+int Motor::set_work_mode(uint16_t mode)
+{
+    int addr = 0x0082;
+    uint16_t data = mode;
+
+    return bus.write_single_register(unit, addr, data);
+}
+
+int Motor::set_working_current(uint16_t current)
+{
+    int addr = 0x0083;
+    uint16_t data = current;
+
+    return bus.write_single_register(unit, addr, data);
+}

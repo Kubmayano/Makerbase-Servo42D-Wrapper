@@ -30,7 +30,7 @@ ModbusBus::~ModbusBus()
     }
 }
 
-int ModbusBus::read_holding_regs(uint8_t unit, int addr, int nb, uint16_t* dest)
+int ModbusBus::read_holding_registers(uint8_t unit, int addr, int nb, uint16_t* dest)
 {
     std::scoped_lock lk(mtx_);
     modbus_set_slave(ctx_, unit);
@@ -44,7 +44,7 @@ int ModbusBus::read_input_registers(uint8_t unit, int addr, int nb, uint16_t* de
     return modbus_read_input_registers(ctx_, addr, nb, dest);
 }
 
-int ModbusBus::write_single_reg(uint8_t unit, int addr, uint16_t value)
+int ModbusBus::write_single_register(uint8_t unit, int addr, uint16_t value)
 {
     std::scoped_lock lk(mtx_);
     modbus_set_slave(ctx_, unit);

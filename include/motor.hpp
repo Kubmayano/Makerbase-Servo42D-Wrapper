@@ -67,6 +67,38 @@ class Motor
          */
         int32_t read_position_angle_error();
 
+        /**
+         * @brief Checks if motor is enabled or not.
+         * @return False is motor is disabled, True if motor is enabled.
+         */
+        bool read_enable_status();
+
+        /**
+         * @brief Outputs the version information of the motor, unfortunately no way to decode it.
+         * @return version information.
+         */
+        uint32_t read_version_information();
+
+        /**
+         * @brief Calibrates the motor, same as the 'cal' option on the display.
+         * @return Number of registers written from modbus, Returns -1 if failed.
+         */
+        int calibrate_motor();
+
+        /**
+         * @brief Sets the working mode of the motor.
+         * @param mode 00 => CR_OPEN, 01 => CR_CLOSE, 02 => CR_vFOC, 03 => SR_OPEN, 04 => SR_CLOSED, 05 => SR_vFOC.
+         * @return Number of registers written from modbus, Returns -1 if failed.
+         */
+        int set_work_mode(uint16_t mode);
+
+        /**
+         * @brief Sets the working current of the motor, max 3000mA. If the highest bit of current is 1, the value will be set but not saved.
+         * @param current The current in mA's.
+         * @return No idea yet.
+         */
+        int set_working_current(uint16_t current);
+
     private:
         ModbusBus& bus;
         uint8_t unit;

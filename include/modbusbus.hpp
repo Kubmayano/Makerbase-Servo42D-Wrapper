@@ -9,9 +9,44 @@ class ModbusBus
     public:
         explicit ModbusBus(const std::string& port, int baud);
         ~ModbusBus();
-        int read_holding_regs(uint8_t unit, int addr, int nb, uint16_t* dest);
-        int write_single_reg(uint8_t unit, int addr, uint16_t value);
+
+        /**
+         * @brief Reads the value of holding registers.
+         * @param unit The motor ID which to execute the command on.
+         * @param addr The function address according to servo42d documentation.
+         * @param nb The number of registers being read.
+         * @param dest The destination array to send the data back to.
+         * @return Not sure about this yet.
+         */
+        int read_holding_registers(uint8_t unit, int addr, int nb, uint16_t* dest);
+
+        /**
+         * @brief Writes data to a single register.
+         * @param unit The motor ID which to execute the command on. 
+         * @param addr The function address according to servo42d documentation.
+         * @param value The value to write to the register.
+         * @return Not sure about this yet.
+         */
+        int write_single_register(uint8_t unit, int addr, uint16_t value);
+
+        /**
+         * @brief Writes data to multiple registers.
+         * @param unit The motor ID which to execute the command on.
+         * @param addr The function address according to the servo42d documentation.
+         * @param nb The number of registers being written to.
+         * @param values The values being written to the registers.
+         * @return Not sure about this yet.
+         */
         int write_multiple_registers(uint8_t unit, int addr, int nb, const uint16_t* values);
+
+        /**
+         * @brief Reads the value of input registers.
+         * @param unit The motor ID which to execute the command on.
+         * @param addr The function address acording to the servo42d documentation.
+         * @param nb The number of registers being read.
+         * @param dest The destination array to write the data to.
+         * @return Not sure about this yet.
+         */
         int read_input_registers(uint8_t unit,int addr, int nb, uint16_t* dest);
 
     private:
