@@ -128,7 +128,7 @@ class Motor
         int set_subdivision_interpolation(uint8_t enable);
 
         /**
-         * @brief Sets the serial port baud rate.
+         * @brief Sets the serial port baud rate. Should not be used unless modbusbus baud is also updated right after.
          * @param baud 1 -> 9600, 2 -> 19200, 3 -> 25000, 4 -> 38400, 5 -> 57600, 6 -> 115200, 7 -> 256000.
          * @return 0 on success, -1 on failure.
          */

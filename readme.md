@@ -5,7 +5,6 @@ This driver contains functions for reading motor telemetry and controlling the m
 
 ## Features
 - Reading real-time motor speed.
-- Reading real-time encoder position.
 - Reading real-time tracking error.
 - Emergency stop command
 - Thread-safe Modbus access with std::mutex.

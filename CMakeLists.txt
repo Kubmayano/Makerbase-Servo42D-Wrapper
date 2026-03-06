@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 find_package(PkgConfig REQUIRED)
-find_package(SDL2 REQUIRED)
 
 pkg_check_modules(LIBMODBUS REQUIRED libmodbus)
 
@@ -36,5 +35,4 @@ add_executable(servo42d_example
 target_link_libraries(servo42d_example
     PRIVATE
         servo42d_driver
-        SDL2::SDL2
 )

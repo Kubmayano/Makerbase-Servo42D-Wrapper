@@ -293,6 +293,8 @@ int Motor::set_slave_addr(uint8_t address)
         return -1;
     }
 
+    Motor::slave_id = address;
+
     return 0;
 }
 
